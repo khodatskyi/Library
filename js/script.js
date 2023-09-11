@@ -1,9 +1,7 @@
 const container = document.getElementById('container')
 const buttonAddNewBook = document.getElementById('new-book')
-
-
+const createNewCard = document.getElementById('create-new-card')
 const myLibrary = []
-
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -14,15 +12,8 @@ function Book(title, author, pages, read) {
         return `${title} ${author} ${pages}. You are read this? ${read}`
     }
 }
-function addBookToLibrary(book) {
-    myLibrary.push(book)
-    // createCart(container, book)
-    createCart(container, myLibrary[myLibrary.length - 1])
-    console.log(myLibrary)
 
-}
-
-function createCart(container, bookObj) {
+function createCart(bookObj) {
     // Создаем контейнер и заполняем его тегами п
     let newCart = document.createElement('div')
     let nameBook = document.createElement('p')
@@ -40,6 +31,8 @@ function createCart(container, bookObj) {
     readOrNot.textContent = `You are read this book?   ${bookObj.read}`
     button.textContent = `Delete`
     button.className = 'deleteButton'
+    button.onclick = removeBook
+
 
     // Привязываем теги п к своим родителям
     container.appendChild(newCart)
@@ -50,27 +43,7 @@ function createCart(container, bookObj) {
     newCart.appendChild(button)
 }
 
-function deleteCart(myLibrary) {
-    //  Мы получем а аргументе массив. И далее по нажатии на кнопку "удалить" удаляем карточку со страницы и с нашего массива
-    let deleteButtons = document.querySelectorAll(".deleteButton");
-
-    deleteButtons.forEach(function (button) {
-        button.addEventListener("click", function (event) {
-            let parentDiv = event.target.closest(".cards");
-            let bookTitleElement = parentDiv.querySelector(".book-title");
-            parentDiv.remove();
-
-            myLibrary.forEach((e) => {
-                if (bookTitleElement.textContent == e.title) {
-                    let indexBook = myLibrary.indexOf(e)
-                    myLibrary.splice(indexBook, 1)
-                    console.log(myLibrary)
-                }
-            })
-        });
-    });
-}
-
+// При нажатии на "Add new book" появляется форма для заполнения данных о книге
 buttonAddNewBook.addEventListener('click', function () {
     const displayNewBook = document.getElementById('display-add-book-button');
     const overlay = document.getElementById('overlay-button');
@@ -91,25 +64,26 @@ buttonAddNewBook.addEventListener('click', function () {
 
 })
 
+// При заполнения всех полей в форме и нажатии на кнопку мы создаем обьект с указаными данными
+createNewCard.addEventListener('click', (event) => {
+    event.preventDefault();
 
+    const title = document.getElementById('title')
+    const author = document.getElementById('author')
+    const pages = document.getElementById('pages')
 
-const theHobbit = new Book('Hobbit', 'J.R.R. Tolkien', '295', true)
-const harryPotter = new Book('HarryPotter', 'J. K. Rowling', '310', false)
-const dune = new Book('Dune', 'Frank Gerbert', '896 ', false)
+    if (title.value.trim() != '' && author.value.trim() != '' && pages.value.trim()) {
+        let newCard = new Book(title.value, author.value, pages.value)
+        myLibrary.push(newCard)
+        createCart(newCard)
+    }
 
+})
 
-addBookToLibrary(theHobbit)
-addBookToLibrary(harryPotter)
-addBookToLibrary(dune)
-
-const warAndPeace = new Book('War and Peace', 'Leo Tolstoy', '1225 ', true)
-addBookToLibrary(warAndPeace)
-
-
-deleteCart(myLibrary)
-
-/* 
--сделать кнопку по которой добавлять можно было карточки на наш сайт
--красиво оформить сайт
-
-*/
+function removeBook() {
+    const cardToRemove = event.target.closest('.cards'); // Находим родительскую карточку
+    if (cardToRemove) {
+        cardToRemove.remove(); // Удаляем карточку
+        console.log(cardToRemove)
+    }
+}
