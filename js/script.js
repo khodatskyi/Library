@@ -1,4 +1,5 @@
 const container = document.getElementById('container')
+const buttonAddNewBook = document.getElementById('new-book')
 
 
 const myLibrary = []
@@ -52,9 +53,9 @@ function createCart(container, bookObj) {
 function deleteCart(myLibrary) {
     //  Мы получем а аргументе массив. И далее по нажатии на кнопку "удалить" удаляем карточку со страницы и с нашего массива
     let deleteButtons = document.querySelectorAll(".deleteButton");
-    
-    deleteButtons.forEach(function(button) {
-        button.addEventListener("click", function(event) {
+
+    deleteButtons.forEach(function (button) {
+        button.addEventListener("click", function (event) {
             let parentDiv = event.target.closest(".cards");
             let bookTitleElement = parentDiv.querySelector(".book-title");
             parentDiv.remove();
@@ -67,8 +68,30 @@ function deleteCart(myLibrary) {
                 }
             })
         });
-      });
+    });
 }
+
+buttonAddNewBook.addEventListener('click', function () {
+    const displayNewBook = document.getElementById('display-add-book-button');
+    const overlay = document.getElementById('overlay-button');
+
+    displayNewBook.classList.remove('display-add-book');
+    displayNewBook.classList.add('display-add-book-active');
+
+    overlay.classList.remove('overlay');
+    overlay.classList.add('overlay-active');
+
+    overlay.addEventListener('click', () => {
+        displayNewBook.classList.remove('display-add-book-active')
+        displayNewBook.classList.add('display-add-book');
+
+        overlay.classList.remove('overlay-active')
+        overlay.classList.add('overlay');
+    });
+
+})
+
+
 
 const theHobbit = new Book('Hobbit', 'J.R.R. Tolkien', '295', true)
 const harryPotter = new Book('HarryPotter', 'J. K. Rowling', '310', false)
