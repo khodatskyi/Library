@@ -2,6 +2,8 @@ const container = document.getElementById('container')
 const buttonAddNewBook = document.getElementById('new-book')
 const createNewCard = document.getElementById('create-new-card')
 const myLibrary = []
+const inputs = document.getElementsByTagName('input')
+const issueText = document.getElementById('issue-text')
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -13,34 +15,45 @@ function Book(title, author, pages, read) {
     }
 }
 
-function createCart(bookObj) {
-    // Создаем контейнер и заполняем его тегами п
-    let newCart = document.createElement('div')
-    let nameBook = document.createElement('p')
-    let author = document.createElement('p')
-    let pages = document.createElement('p')
-    let readOrNot = document.createElement('p')
-    let button = document.createElement('button')
 
-    // Добавляем в теги п названия
-    newCart.className = 'cards'
-    nameBook.textContent = bookObj.title
-    nameBook.className = 'book-title'
-    author.textContent = bookObj.author
-    pages.textContent = bookObj.pages
-    readOrNot.textContent = `You are read this book?   ${bookObj.read}`
-    button.textContent = `Delete`
-    button.className = 'deleteButton'
-    button.onclick = removeBook
+// Итерируем массив и выводим каждую книгу
+function displayEachBook(array) {
+    container.innerHTML = ''
+    array.forEach((book) => {
 
 
-    // Привязываем теги п к своим родителям
-    container.appendChild(newCart)
-    newCart.appendChild(nameBook)
-    newCart.appendChild(author)
-    newCart.appendChild(pages)
-    newCart.appendChild(readOrNot)
-    newCart.appendChild(button)
+        let newCart = document.createElement('div')
+        let nameBook = document.createElement('p')
+        let author = document.createElement('p')
+        let pages = document.createElement('p')
+        let readOrNot = document.createElement('p')
+        // let issueText = document.createElement('p')
+        let button = document.createElement('button')
+    
+        // Добавляем в теги п названия
+        newCart.className = 'cards'
+        nameBook.textContent = book.title
+        nameBook.className = 'book-title'
+        author.textContent = book.author
+        pages.textContent = book.pages
+        // issueText.textContent = bookObj.
+        button.textContent = `Delete`
+        button.className = 'deleteButton'
+        if(book.read == '') {
+            readOrNot.textContent = `Книга не прочитана!`
+            } else readOrNot.textContent = `Книга прочитана!`
+        button.onclick = removeBook
+    
+    
+        // Привязываем теги п к своим родителям
+        container.appendChild(newCart)
+        newCart.appendChild(nameBook)
+        newCart.appendChild(author)
+        newCart.appendChild(pages)
+        newCart.appendChild(readOrNot)
+        // newCart.appendChild(issueText)
+        newCart.appendChild(button)
+    }) 
 }
 
 // При нажатии на "Add new book" появляется форма для заполнения данных о книге
@@ -71,6 +84,7 @@ createNewCard.addEventListener('click', (event) => {
     const title = document.getElementById('title')
     const author = document.getElementById('author')
     const pages = document.getElementById('pages')
+    const read = document.getElementById('myCheckbox')
 
     if (title.value.trim() != '' && author.value.trim() != '' && pages.value.trim()) {
         // Проверяем есть ли такая книга уже в нашем каталоге
@@ -79,11 +93,19 @@ createNewCard.addEventListener('click', (event) => {
         });
 
         if(!bookAlreadyExists) {
-            let newCard = new Book(title.value, author.value, pages.value)
+            let newCard = new Book(title.value, author.value, pages.value, read.value)
             myLibrary.push(newCard)
-            createCart(newCard)
+            issueText.textContent = ''
+            // createCart(newCard)
+            displayEachBook(myLibrary)
+
+            // 
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = ''
+            }
         } else {
             console.log('Такая книга уже есть в нашем каталоге!')
+            issueText.textContent = 'Такая книга уже добавлена!'
         }
     }
 
