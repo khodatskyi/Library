@@ -73,9 +73,18 @@ createNewCard.addEventListener('click', (event) => {
     const pages = document.getElementById('pages')
 
     if (title.value.trim() != '' && author.value.trim() != '' && pages.value.trim()) {
-        let newCard = new Book(title.value, author.value, pages.value)
-        myLibrary.push(newCard)
-        createCart(newCard)
+        // Проверяем есть ли такая книга уже в нашем каталоге
+        const bookAlreadyExists = myLibrary.some((book) => {
+            return book.title.toLowerCase() === title.value.toLowerCase();
+        });
+
+        if(!bookAlreadyExists) {
+            let newCard = new Book(title.value, author.value, pages.value)
+            myLibrary.push(newCard)
+            createCart(newCard)
+        } else {
+            console.log('Такая книга уже есть в нашем каталоге!')
+        }
     }
 
 })
@@ -84,6 +93,12 @@ function removeBook() {
     const cardToRemove = event.target.closest('.cards'); // Находим родительскую карточку
     if (cardToRemove) {
         cardToRemove.remove(); // Удаляем карточку
-        console.log(cardToRemove)
+        const bookName = cardToRemove.querySelector('.book-title') // Получаем доступ к названию книги
+        console.log(bookName.textContent)
+        myLibrary.forEach((book) => {
+            if(book.title == bookName.textContent) {
+                myLibrary.splice(myLibrary.indexOf(book), 1)
+            }
+        })
     }
 }
