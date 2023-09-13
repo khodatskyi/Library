@@ -1,4 +1,207 @@
+@charset "UTF-8";
 :root {
+  background-color: #e0e2db;
+}
+
+* {
   margin: 0;
   padding: 0;
+}
+
+.container {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.cards {
+  padding: 20px;
+  background-color: #3d348b;
+  color: #e0e2db;
+  font-size: 2rem;
+  min-height: 300px;
+  min-width: 350px;
+  border-radius: 30px;
+}
+.cards p {
+  margin-bottom: 30px;
+}
+.cards > button {
+  width: 70%;
+  height: 3rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: #3d348b;
+  height: 6rem;
+  margin-bottom: 3rem;
+}
+.header-container p {
+  font-size: 1.4rem;
+}
+.header-container button {
+  text-decoration: none;
+  color: white;
+  font-size: 1.4rem;
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #e6af2e;
+}
+.header-container button:hover {
+  background-color: #3d348b;
+  color: #e0e2db;
+  cursor: pointer;
+}
+
+.display-add-book {
+  display: none;
+}
+
+.display-add-book-active {
+  grid-template-rows: repeat(3, 1fr);
+  z-index: 1;
+  width: 300px;
+  height: 400px;
+  padding: 20px;
+  position: fixed;
+  top: 30%;
+  left: 40%;
+  text-align: center;
+  background-color: #e6af2e;
+}
+.display-add-book-active h4 {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+  color: #3d348b;
+}
+.display-add-book-active input {
+  font-size: 1.1rem;
+  padding-left: 10px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  height: 2rem;
+  border-radius: 20px;
+}
+.display-add-book-active .checkbox-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 1rem;
+  margin-bottom: 3rem;
+}
+.display-add-book-active .checkbox-info > label {
+  font-size: 1.4rem;
+  color: #3d348b;
+  font-weight: 600;
+}
+.display-add-book-active .checkbox-info > input {
+  border: none;
+  margin-bottom: 0;
+  width: 20px;
+  border: 1px solid #3d348b;
+}
+.display-add-book-active .checkbox-info > input:focus {
+  border: 1px solid #3d348b;
+  border-color: #3d348b;
+}
+.display-add-book-active #issue-text {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: red;
+}
+.display-add-book-active button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 20px;
+  font-size: 1.5rem;
+  background-color: #3d348b;
+  color: #e0e2db;
+  cursor: pointer;
+  height: 4rem;
+}
+.display-add-book-active button:hover {
+  background-color: #e0e2db;
+  color: #3d348b;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+.display-add-book-active button:active {
+  font-size: 2rem;
+  padding: 20px;
+}
+.display-add-book-active input[type=number]::-webkit-inner-spin-button,
+.display-add-book-active input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  /* Установите отступ на ваше усмотрение, чтобы управлять расположением инпута */
+}
+
+.overlay {
+  display: none;
+}
+
+.overlay-active {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.712);
+}
+
+.deleteButton {
+  background-color: #e0e2db;
+  cursor: pointer;
+}
+.deleteButton:hover {
+  background-color: #171515;
+  color: white;
+}
+
+.read-info-button-true {
+  background-color: rgb(156, 255, 169);
+  cursor: pointer;
+}
+.read-info-button-true:hover {
+  background-color: rgb(71, 213, 90);
+}
+
+.read-info-button-false {
+  cursor: pointer;
+  background-color: #ff8787;
+}
+.read-info-button-false:hover {
+  background-color: #cf5252;
+}
+
+@media (max-width: 1300px) {
+  .display-add-book-active {
+    left: 35%;
+  }
+}
+@media (max-width: 1000px) {
+  .display-add-book-active {
+    left: 25%;
+  }
+}
+@media (max-width: 700px) {
+  .display-add-book-active {
+    left: 15%;
+  }
+  .cards {
+    min-width: 300px;
+  }
 }/*# sourceMappingURL=style.css.map */
