@@ -4,6 +4,13 @@ const createNewCard = document.getElementById('create-new-card')
 const myLibrary = []
 const inputs = document.getElementsByTagName('input')
 const issueText = document.getElementById('issue-text')
+const statistic = document.getElementById('Statistic')
+let bookToRead = 0
+
+const title = document.getElementById('title')
+const author = document.getElementById('author')
+const pages = document.getElementById('pages')
+const read = document.getElementById('myCheckbox')
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -13,47 +20,6 @@ function Book(title, author, pages, read) {
     this.info = () => {
         return `${title} ${author} ${pages}. You are read this? ${read}`
     }
-}
-
-
-// Итерируем массив и выводим каждую книгу
-function displayEachBook(array) {
-    container.innerHTML = ''
-    array.forEach((book) => {
-
-
-        let newCart = document.createElement('div')
-        let nameBook = document.createElement('p')
-        let author = document.createElement('p')
-        let pages = document.createElement('p')
-        let readOrNot = document.createElement('p')
-        // let issueText = document.createElement('p')
-        let button = document.createElement('button')
-    
-        // Добавляем в теги п названия
-        newCart.className = 'cards'
-        nameBook.textContent = book.title
-        nameBook.className = 'book-title'
-        author.textContent = book.author
-        pages.textContent = book.pages
-        // issueText.textContent = bookObj.
-        button.textContent = `Delete`
-        button.className = 'deleteButton'
-        if(book.read == '') {
-            readOrNot.textContent = `Книга не прочитана!`
-            } else readOrNot.textContent = `Книга прочитана!`
-        button.onclick = removeBook
-    
-    
-        // Привязываем теги п к своим родителям
-        container.appendChild(newCart)
-        newCart.appendChild(nameBook)
-        newCart.appendChild(author)
-        newCart.appendChild(pages)
-        newCart.appendChild(readOrNot)
-        // newCart.appendChild(issueText)
-        newCart.appendChild(button)
-    }) 
 }
 
 // При нажатии на "Add new book" появляется форма для заполнения данных о книге
@@ -74,17 +40,11 @@ buttonAddNewBook.addEventListener('click', function () {
         overlay.classList.remove('overlay-active')
         overlay.classList.add('overlay');
     });
-
 })
 
 // При заполнения всех полей в форме и нажатии на кнопку мы создаем обьект с указаными данными
 createNewCard.addEventListener('click', (event) => {
     event.preventDefault();
-
-    const title = document.getElementById('title')
-    const author = document.getElementById('author')
-    const pages = document.getElementById('pages')
-    const read = document.getElementById('myCheckbox')
 
     if (title.value.trim() != '' && author.value.trim() != '' && pages.value.trim()) {
         // Проверяем есть ли такая книга уже в нашем каталоге
@@ -92,14 +52,16 @@ createNewCard.addEventListener('click', (event) => {
             return book.title.toLowerCase() === title.value.toLowerCase();
         });
 
-        if(!bookAlreadyExists) {
+        if (!bookAlreadyExists) {
+            checkCheckbox()
             let newCard = new Book(title.value, author.value, pages.value, read.value)
             myLibrary.push(newCard)
             issueText.textContent = ''
-            // createCart(newCard)
+
             displayEachBook(myLibrary)
 
-            // 
+            statistic.textContent = `Книг к прочтению ${bookToRead}`
+
             for (let i = 0; i < inputs.length; i++) {
                 inputs[i].value = ''
             }
@@ -118,9 +80,95 @@ function removeBook() {
         const bookName = cardToRemove.querySelector('.book-title') // Получаем доступ к названию книги
         console.log(bookName.textContent)
         myLibrary.forEach((book) => {
-            if(book.title == bookName.textContent) {
+            if (book.title == bookName.textContent) {
                 myLibrary.splice(myLibrary.indexOf(book), 1)
+                bookToRead--
+                statistic.textContent = `Книг к прочтению ${bookToRead}`
             }
         })
     }
+}
+
+// Проверяем при создании карты прочитана книга или нет 
+function checkCheckbox() {
+    if (read.checked) {
+        read.value = true
+        console.log(typeof read.value)
+    } else {
+        read.value = false
+        console.log(typeof read.value)
+
+        bookToRead++
+    }
+}
+
+// Итерируем массив и выводим каждую книгу
+function displayEachBook(array) {
+    container.innerHTML = ''
+    array.forEach((book) => {
+
+        let newCart = document.createElement('div')
+        let nameBook = document.createElement('p')
+        let author = document.createElement('p')
+        let pages = document.createElement('p')
+        let readOrNot = document.createElement('p')
+        let button = document.createElement('button')
+        let buttonReadInfo = document.createElement('button')
+
+        // Добавляем в теги п названия
+        newCart.className = 'cards'
+        nameBook.textContent = book.title
+        nameBook.className = 'book-title'
+        author.textContent = book.author
+        pages.textContent = book.pages
+        // issueText.textContent = bookObj.
+        button.textContent = `Delete`
+        button.className = 'deleteButton'
+        button.onclick = removeBook
+
+        if (book.read == 'true') {
+            buttonReadInfo.textContent = `Read`
+            buttonReadInfo.className = 'read-info-button-true'
+
+        } else {
+
+            buttonReadInfo.textContent = `Not Read`
+            buttonReadInfo.className = 'read-info-button-false'
+
+        }
+
+        function changeReadStatus() {
+            if (book.read == 'true') {
+                console.log(book.read)
+
+                book.read = 'false'
+                buttonReadInfo.textContent = `Not Read`
+                buttonReadInfo.className = 'read-info-button-false'
+                console.log(book.read)
+                bookToRead++
+                statistic.textContent = `Книг к прочтению ${bookToRead}`
+
+            } else {
+                console.log(book.read)
+                book.read = 'true'
+                console.log(book.read)
+                bookToRead--
+                statistic.textContent = `Книг к прочтению ${bookToRead}`
+                buttonReadInfo.textContent = `Read`
+                buttonReadInfo.className = 'read-info-button-true'
+
+            }
+        }
+        buttonReadInfo.onclick = changeReadStatus
+
+        // Привязываем теги п к своим родителям
+        container.appendChild(newCart)
+        newCart.appendChild(nameBook)
+        newCart.appendChild(author)
+        newCart.appendChild(pages)
+        newCart.appendChild(readOrNot)
+        // newCart.appendChild(issueText)
+        newCart.appendChild(button)
+        newCart.appendChild(buttonReadInfo)
+    })
 }
